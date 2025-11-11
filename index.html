@@ -3,55 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesinca</title>
+    <title>Condo Board Financial Report - 2018-2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
-        header { background: #2d3e50; color: #fff; padding: 2rem 1rem; text-align: center; }
-        section { margin: 2rem auto; max-width: 800px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 2rem; }
-        h2 { color: #2d3e50; }
-        .services ul { list-style: none; padding: 0; }
-        .services li { margin: 0.5rem 0; }
-        .social-links a { margin-right: 1rem; text-decoration: none; color: #2d3e50; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        footer { text-align: center; padding: 1rem; color: #888; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .chart-container.full-width {
+            grid-column: 2;
+        }
+        
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .chart-container.full-width {
+                grid-column: 1 / -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container.full-width {
+                grid-column: 1;
+            }
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.0em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        canvas {
+            display: block;
+            max-height: 300px;
+        }
+        
+        .summary-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .summary-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 1024px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .summary-card {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .summary-card h3 {
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .summary-card .value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .summary-card .change {
+            font-size: 0.85em;
+            margin-top: 5px;
+            color: #666;
+        }
+        
+        .positive {
+            color: #28a745;
+        }
+        
+        .negative {
+            color: #dc3545;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Hesinca</h1>
-        <p>Your trusted partner for quality services</p> 
-        <p>He is fulfilling your need in Canada</p>
-    </header>
-    <section class="services">
-        <h2>The Services - Hesinca</h2>
-        <ul>
-            <li>Service 1: Condo Living Chaos</li>
-            <li>Service 2: Photography and Printing</li>
-            <li>Service 3: Job Hunting and Resume Tailoring</li>
-        </ul>
-    </section>
-    <section class="contact">
-        <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:support@hesinca.ca">support@hesinca.ca</a></p>
-        <p>Phone: +1-647-614-2333</p>
-    </section>
-    <section class="social-media">
-        <h2>Follow Us Soon</h2>
-        <div class="social-links">
-            <a href="#" target="_blank">Facebook - not available now</a>
-            <a href="#" target="_blank">Twitter - not available now</a>
-            <a href="#" target="_blank">Instagram - not available now</a>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Condo Board Financial Report</h1>
+            <p>9-Year Financial Analysis (2018-2026)</p>
         </div>
-    </section>
-    <section class="video">
-        <h2>Watch the Introduction/view of Toronto</h2>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/unjF5ojfGxQ" frameborder="0" allowfullscreen></iframe>
+        
+        <div class="summary-section">
+            <h2>📈 Key Metrics</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>2026 Maintenance Fee</h3>
+                    <div class="value">$1.10/sqft</div>
+                    <div class="change"><span class="positive">+5.77%</span> vs 2025</div>
+                </div>
+                <div class="summary-card">
+                    <h3>2026 Common Expenses</h3>
+                    <div class="value">$2,834,060</div>
+                    <div class="change"><span class="positive">+5.82%</span> vs 2025</div>
+                </div>
+                <div class="summary-card">
+                    <h3>2026 Reserve Fund Contribution</h3>
+                    <div class="value">$1,017,956</div>
+                    <div class="change"><span class="positive">+8.29%</span> vs 2025</div>
+                </div>
+                <div class="summary-card">
+                    <h3>9-Year Growth (2018-2026)</h3>
+                    <div class="value">+92.98%</div>
+                    <div class="change">Maintenance Fee Growth</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Average Annual Increase</h3>
+                    <div class="value">+6.50%</div>
+                    <div class="change">Historical Average</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Latest Reserve Balance (2025)</h3>
+                    <div class="value">$5,452,053</div>
+                    <div class="change">Fund Status: Strong</div>
+                </div>
+            </div>
         </div>
-    </section>
-    <footer>
-        &copy; 2025 Hesinca. All rights reserved.
-    </footer>
+        
+        <div class="charts-grid">
+            <!-- Chart 1: Maintenance Fee Trend -->
+            <div class="chart-container">
+                <div class="chart-title">Maintenance Fee per sqft Trend</div>
+                <canvas id="maintenanceChart"></canvas>
+            </div>
+            
+            <!-- Chart 5: Year-over-Year Growth -->
+            <div class="chart-container">
+                <div class="chart-title">Maintenance Fee YoY Growth %</div>
+                <canvas id="growthChart"></canvas>
+            </div>
+            
+            <!-- Chart 6: Reserve Fund Balance -->
+            <div class="chart-container">
+                <div class="chart-title">Closing Reserve Fund Balance</div>
+                <canvas id="reserveBalanceChart"></canvas>
+            </div>
+            
+            <!-- Chart 2: Common Expense Contribution -->
+            <div class="chart-container">
+                <div class="chart-title">Common Expense Contribution</div>
+                <canvas id="expenseChart"></canvas>
+            </div>
+            
+            <!-- Chart 4: Financial Overview -->
+            <div class="chart-container full-width">
+                <div class="chart-title">Budget Allocation</div>
+                <canvas id="overviewChart"></canvas>
+            </div>
+            
+            <!-- Chart 3: Reserve Fund vs Expenditures -->
+            <div class="chart-container">
+                <div class="chart-title">Budget Allocation: Reserve vs Expenditures</div>
+                <canvas id="budgetAllocationChart"></canvas>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Generated from Budget Calendar Data | Report Date: November 2025</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Chart color scheme
+        const primaryColor = 'rgb(102, 126, 234)';
+        const secondaryColor = 'rgb(118, 75, 162)';
+        const successColor = 'rgb(40, 167, 69)';
+        const dangerColor = 'rgb(220, 53, 69)';
+        
+        // Data
+        const years = ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'];
+        const maintenanceFee = [0.57, 0.67, 0.75, 0.85, 0.88, 0.94, 1.00, 1.04, 1.10];
+        const commonExpense = [1452367, 1731290, 1923613, 2193695, 2250070, 2405327, 2575619, 2677616, 2834060];
+        const reserveFund = [178361, 297888, 497472, 830780, 843227, 855875, 868714, 940375, 1017956];
+        const expenditures = [1232280, 1396077, 1500113, 1448719, 1449710, 1620372, 1732463, 1769516, 1849179];
+        const otherIncome = [-41726, -37325, 73972, 85804, 42867, 70920, 25558, 32275, 33075];
+        const reserveBalance = [null, null, null, null, null, 3464890, 4412465, 5452053, null];
+        
+        // Chart 1: Maintenance Fee Trend
+        new Chart(document.getElementById('maintenanceChart'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Maintenance Fee ($/sqft)',
+                    data: maintenanceFee,
+                    borderColor: primaryColor,
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: primaryColor,
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: false, ticks: { callback: v => '$' + v.toFixed(2) } }
+                }
+            }
+        });
+        
+        // Chart 2: Common Expense Contribution
+        new Chart(document.getElementById('expenseChart'), {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Common Expense ($)',
+                    data: commonExpense,
+                    backgroundColor: successColor,
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' } }
+                }
+            }
+        });
+        
+        // Chart 3: Reserve Fund vs Expenditures
+        new Chart(document.getElementById('budgetAllocationChart'), {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'To Reserve Fund',
+                        data: reserveFund,
+                        backgroundColor: 'rgba(255, 127, 14, 0.8)',
+                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'To Total Expenditures',
+                        data: expenditures,
+                        backgroundColor: dangerColor,
+                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { stacked: false, ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' } }
+                }
+            }
+        });
+        
+        // Chart 4: Financial Overview (in millions)
+        new Chart(document.getElementById('overviewChart'), {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Reserve Fund',
+                        data: reserveFund.map(v => v/1e6),
+                        backgroundColor: 'rgb(255, 127, 14)',
+                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Expenditures',
+                        data: expenditures.map(v => v/1e6),
+                        backgroundColor: dangerColor,
+                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, ticks: { callback: v => '$' + v.toFixed(1) + 'M' } }
+                }
+            }
+        });
+        
+        // Chart 5: YoY Growth
+        const yoyGrowth = [];
+        for (let i = 1; i < maintenanceFee.length; i++) {
+            const growth = ((maintenanceFee[i] - maintenanceFee[i-1]) / maintenanceFee[i-1]) * 100;
+            yoyGrowth.push(growth);
+        }
+        
+        new Chart(document.getElementById('growthChart'), {
+            type: 'line',
+            data: {
+                labels: years.slice(1),
+                datasets: [{
+                    label: 'YoY Growth %',
+                    data: yoyGrowth,
+                    borderColor: primaryColor,
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: primaryColor,
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { ticks: { callback: v => v.toFixed(1) + '%' } } }
+            }
+        });
+        
+        // Chart 6: Reserve Balance
+        const balanceYears = ['2023', '2024', '2025'];
+        const balanceData = [3464890, 4412465, 5452053];
+        
+        new Chart(document.getElementById('reserveBalanceChart'), {
+            type: 'bar',
+            data: {
+                labels: balanceYears,
+                datasets: [{
+                    label: 'Reserve Fund Balance ($)',
+                    data: balanceData,
+                    backgroundColor: primaryColor,
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString('en-US', {maximumFractionDigits: 0});
+                            }
+                        }
+                    }
+                },
+                scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' } } }
+            }
+        });
+    </script>
 </body>
 </html>
